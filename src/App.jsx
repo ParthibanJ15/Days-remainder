@@ -71,7 +71,7 @@ export default function App() {
 
         <main className="app-main">
           {loading ? (
-            <div className="text-center py-16 text-white/50">Loading events…</div>
+            <div className="text-center py-16" style={{ color: '#a855f7' }}>Loading events…</div>
           ) : (
             <EventList events={events} />
           )}

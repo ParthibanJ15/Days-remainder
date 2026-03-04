@@ -23,10 +23,10 @@ export default function EventList({ events }) {
                 <section>
                     <div className="flex items-center gap-2 mb-3">
                         <span className="text-2xl">🎉</span>
-                        <h2 className="text-yellow-400 font-bold text-base uppercase tracking-widest">
+                        <h2 className="font-bold text-base uppercase tracking-widest" style={{ color: '#166534' }}>
                             Today
                         </h2>
-                        <span className="flex-1 h-px bg-yellow-400/20" />
+                        <span className="flex-1 h-px" style={{ background: 'rgba(22,101,52,0.25)' }} />
                     </div>
                     <div className="space-y-3">
                         {todayEvents.map((event) => (
@@ -44,11 +44,11 @@ export default function EventList({ events }) {
                 <section>
                     <div className="flex items-center gap-2 mb-3">
                         <span className="text-xl">📅</span>
-                        <h2 className="text-white/50 font-bold text-base uppercase tracking-widest">
+                        <h2 className="font-bold text-base uppercase tracking-widest" style={{ color: '#a16207' }}>
                             Upcoming
                         </h2>
-                        <span className="flex-1 h-px bg-white/10" />
-                        <span className="text-white/30 text-xs">{upcomingEvents.length} events</span>
+                        <span className="flex-1 h-px" style={{ background: 'rgba(161,98,7,0.20)' }} />
+                        <span className="text-xs" style={{ color: '#9ca3af' }}>{upcomingEvents.length} events</span>
                     </div>
                     <div className="space-y-3">
                         {upcomingEvents.map((event, index) => (
