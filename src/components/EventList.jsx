@@ -1,13 +1,13 @@
 import EventCard from './EventCard';
 import { sortEvents, isToday } from '../utils/dateUtils';
 
-export default function EventList({ events, onDelete, onEdit }) {
+export default function EventList({ events }) {
     if (events.length === 0) {
         return (
             <div className="text-center py-16 px-6">
                 <div className="text-6xl mb-4">🗓️</div>
                 <h3 className="text-white/60 text-lg font-medium">No events yet</h3>
-                <p className="text-white/30 text-sm mt-1">Add a birthday or anniversary to get started!</p>
+                <p className="text-white/30 text-sm mt-1">Add entries to events.json to get started!</p>
             </div>
         );
     }
@@ -33,8 +33,6 @@ export default function EventList({ events, onDelete, onEdit }) {
                             <EventCard
                                 key={event.id}
                                 event={event}
-                                onDelete={onDelete}
-                                onEdit={onEdit}
                             />
                         ))}
                     </div>
@@ -60,8 +58,6 @@ export default function EventList({ events, onDelete, onEdit }) {
                             >
                                 <EventCard
                                     event={event}
-                                    onDelete={onDelete}
-                                    onEdit={onEdit}
                                 />
                             </div>
                         ))}

@@ -1,53 +1,22 @@
-import { useState, useEffect, useCallback } from 'react';
-import AddEvent from './components/AddEvent';
+import { useState, useEffect } from 'react';
 import EventList from './components/EventList';
-import Toolbar from './components/Toolbar';
 import './index.css';
-
-const STORAGE_KEY = 'family-events';
-
-function loadEvents() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    return raw ? JSON.parse(raw) : null; // null = not yet seeded
-  } catch {
-    return [];
-  }
-}
-
-function saveEvents(events) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(events));
-}
 
 export default function App() {
   const [events, setEvents] = useState([]);
-  const [editEvent, setEditEvent] = useState(null);
-  const [showForm, setShowForm] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [lastRefresh, setLastRefresh] = useState(new Date().toDateString());
-  const [importMsg, setImportMsg] = useState('');
 
-  // Seed from events.json if localStorage is empty on first load
+  // Always fetch events from events.json — it is the single source of truth
   useEffect(() => {
-    const stored = loadEvents();
-    if (stored !== null && stored.length > 0) {
-      setEvents(stored);
-    } else {
-      fetch('/events.json')
-        .then((r) => r.json())
-        .then((data) => {
-          if (Array.isArray(data) && data.length > 0) {
-            setEvents(data);
-            saveEvents(data);
-          }
-        })
-        .catch(() => { }); // silent fail if no seed file
-    }
+    fetch('/events.json')
+      .then((r) => r.json())
+      .then((data) => {
+        if (Array.isArray(data)) setEvents(data);
+      })
+      .catch(() => { })
+      .finally(() => setLoading(false));
   }, []);
-
-  // Persist to localStorage on change
-  useEffect(() => {
-    if (events.length > 0) saveEvents(events);
-  }, [events]);
 
   // Auto-reorder at midnight
   useEffect(() => {
@@ -60,57 +29,6 @@ export default function App() {
     }, 60 * 1000);
     return () => clearInterval(checkDayChange);
   }, [lastRefresh]);
-
-  const handleAddOrUpdate = useCallback((event) => {
-    setEvents((prev) => {
-      const existing = prev.find((e) => e.id === event.id);
-      if (existing) return prev.map((e) => (e.id === event.id ? event : e));
-      return [...prev, event];
-    });
-    setEditEvent(null);
-    setShowForm(false);
-  }, []);
-
-  const handleDelete = useCallback((id) => {
-    setEvents((prev) => prev.filter((e) => e.id !== id));
-  }, []);
-
-  const handleEdit = useCallback((event) => {
-    setEditEvent(event);
-    setShowForm(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, []);
-
-  const handleCancelEdit = useCallback(() => {
-    setEditEvent(null);
-    setShowForm(false);
-  }, []);
-
-  // Export current events as a downloadable JSON file
-  const handleExport = useCallback(() => {
-    const blob = new Blob([JSON.stringify(events, null, 2)], {
-      type: 'application/json',
-    });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'family-events.json';
-    a.click();
-    URL.revokeObjectURL(url);
-  }, [events]);
-
-  // Import events from a JSON file — merges by id (avoids duplicates)
-  const handleImport = useCallback((incoming) => {
-    setEvents((prev) => {
-      const ids = new Set(prev.map((e) => e.id));
-      const newOnes = incoming.filter((e) => !ids.has(e.id));
-      const merged = [...prev, ...newOnes];
-      saveEvents(merged);
-      setImportMsg(`✅ Imported ${newOnes.length} new event${newOnes.length !== 1 ? 's' : ''}!`);
-      setTimeout(() => setImportMsg(''), 3000);
-      return merged;
-    });
-  }, []);
 
   // Stats
   const now = new Date();
@@ -149,40 +67,14 @@ export default function App() {
               )}
             </div>
           )}
-
-          {/* Toolbar */}
-          <Toolbar onExport={handleExport} onImport={handleImport} />
-
-          {/* Import success message */}
-          {importMsg && <div className="import-toast">{importMsg}</div>}
-
-          {/* Add button */}
-          {!showForm && (
-            <button
-              onClick={() => setShowForm(true)}
-              className="add-btn"
-            >
-              <span>＋</span> Add Event
-            </button>
-          )}
         </header>
 
         <main className="app-main">
-          {/* Form */}
-          {showForm && (
-            <AddEvent
-              onAdd={handleAddOrUpdate}
-              editEvent={editEvent}
-              onCancelEdit={handleCancelEdit}
-            />
+          {loading ? (
+            <div className="text-center py-16 text-white/50">Loading events…</div>
+          ) : (
+            <EventList events={events} />
           )}
-
-          {/* Event List */}
-          <EventList
-            events={events}
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
         </main>
       </div>
     </div>

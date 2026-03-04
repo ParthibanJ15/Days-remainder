@@ -18,7 +18,7 @@ const TYPE_CONFIG = {
     },
 };
 
-export default function EventCard({ event, onDelete, onEdit }) {
+export default function EventCard({ event }) {
     const todayFlag = isToday(event.date);
     const config = TYPE_CONFIG[event.type] || TYPE_CONFIG.Birthday;
     const nextDate = getNextOccurrence(event.date);
@@ -85,24 +85,6 @@ export default function EventCard({ event, onDelete, onEdit }) {
                             <p className="next-date">Next: {nextDate.format('MMM DD, YYYY')}</p>
                         </div>
                     </div>
-                </div>
-
-                {/* Actions */}
-                <div className="card-actions">
-                    <button
-                        onClick={() => onEdit(event)}
-                        title="Edit"
-                        className="action-btn action-btn--edit"
-                    >
-                        ✏️
-                    </button>
-                    <button
-                        onClick={() => onDelete(event.id)}
-                        title="Delete"
-                        className="action-btn action-btn--delete"
-                    >
-                        🗑️
-                    </button>
                 </div>
             </div>
 

@@ -1,26 +1,32 @@
 [
     {
         "id": "seed-001",
-        "name": "Amma",
+        "name": "Jegan",
         "type": "Birthday",
-        "date": "1970-06-15"
+        "date": "1980-06-26"
     },
     {
         "id": "seed-002",
-        "name": "Appa",
+        "name": "Santhi",
         "type": "Birthday",
-        "date": "1968-03-22"
+        "date": "1981-04-15"
     },
     {
         "id": "seed-003",
-        "name": "Amma & Appa",
+        "name": "Jegan & Santhi",
         "type": "Anniversary",
-        "date": "1995-11-10"
+        "date": "2004-09-01"
     },
     {
         "id": "seed-004",
-        "name": "Akka",
+        "name": "Desigun",
         "type": "Birthday",
-        "date": "1998-08-04"
+        "date": "2010-06-23"
+    },
+    {
+        "id": "seed-005",
+        "name": "Parthiban",
+        "type": "Birthday",
+        "date": "2004-09-15"
     }
 ]
