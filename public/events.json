@@ -1,0 +1,26 @@
+[
+    {
+        "id": "seed-001",
+        "name": "Amma",
+        "type": "Birthday",
+        "date": "1970-06-15"
+    },
+    {
+        "id": "seed-002",
+        "name": "Appa",
+        "type": "Birthday",
+        "date": "1968-03-22"
+    },
+    {
+        "id": "seed-003",
+        "name": "Amma & Appa",
+        "type": "Anniversary",
+        "date": "1995-11-10"
+    },
+    {
+        "id": "seed-004",
+        "name": "Akka",
+        "type": "Birthday",
+        "date": "1998-08-04"
+    }
+]

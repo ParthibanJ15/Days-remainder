@@ -4,22 +4,22 @@ import dayjs from 'dayjs';
 const TYPE_CONFIG = {
     Birthday: {
         icon: '🎂',
-        gradientFrom: '#7c3aed',
-        gradientTo: '#4f46e5',
-        badge: 'bg-purple-500/20 text-purple-300 border-purple-400/30',
-        accent: 'text-purple-300',
+        accentColor: '#a855f7',
+        accentGlow: 'rgba(168,85,247,0.35)',
+        badge: 'badge-birthday',
+        countdownClass: 'countdown-birthday',
     },
     Anniversary: {
         icon: '💍',
-        gradientFrom: '#e11d48',
-        gradientTo: '#9f1239',
-        badge: 'bg-rose-500/20 text-rose-300 border-rose-400/30',
-        accent: 'text-rose-300',
+        accentColor: '#f43f5e',
+        accentGlow: 'rgba(244,63,94,0.35)',
+        badge: 'badge-anniversary',
+        countdownClass: 'countdown-anniversary',
     },
 };
 
 export default function EventCard({ event, onDelete, onEdit }) {
-    const today = isToday(event.date);
+    const todayFlag = isToday(event.date);
     const config = TYPE_CONFIG[event.type] || TYPE_CONFIG.Birthday;
     const nextDate = getNextOccurrence(event.date);
     const originalYear = dayjs(event.date).year();
@@ -29,96 +29,87 @@ export default function EventCard({ event, onDelete, onEdit }) {
     const displayDate = formatDisplayDate(event.date);
 
     return (
-        <div
-            className={`card-enter rounded-2xl p-5 border transition-all duration-300 group
-        ${today
-                    ? 'today-card'
-                    : 'bg-white/5 border-white/10 hover:bg-white/8 hover:border-white/20'
-                }`}
-        >
-            <div className="flex items-start justify-between gap-3">
-                {/* Left: Icon + Info */}
-                <div className="flex items-start gap-4 flex-1 min-w-0">
+        <div className={`event-card ${todayFlag ? 'event-card--today' : ''}`}>
+            {/* Colored left accent bar */}
+            <div
+                className="card-accent"
+                style={{
+                    background: todayFlag
+                        ? 'linear-gradient(180deg,#facc15,#f97316)'
+                        : `linear-gradient(180deg,${config.accentColor},${config.accentColor}88)`,
+                    boxShadow: todayFlag
+                        ? '0 0 12px rgba(250,204,21,0.6)'
+                        : `0 0 10px ${config.accentGlow}`,
+                }}
+            />
+
+            <div className="card-body">
+                <div className="card-left">
                     {/* Icon circle */}
-                    <div
-                        className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center text-xl
-              ${today ? 'bg-yellow-400/20 ring-2 ring-yellow-400/50' : 'bg-white/10'}`}
-                    >
+                    <div className={`icon-circle ${todayFlag ? 'icon-circle--today' : ''}`}>
                         {config.icon}
                     </div>
 
-                    {/* Details */}
-                    <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap">
-                            <h3 className={`text-base font-bold truncate ${today ? 'text-yellow-300' : 'text-white'}`}>
+                    {/* Info */}
+                    <div className="card-info">
+                        <div className="name-row">
+                            <h3 className={`event-name ${todayFlag ? 'event-name--today' : ''}`}>
                                 {event.name}
                             </h3>
-                            {today && (
-                                <span className="today-badge text-lg">🎉</span>
-                            )}
+                            {todayFlag && <span className="bounce-badge">🎉</span>}
                         </div>
 
-                        {/* Type badge + date */}
-                        <div className="flex items-center gap-2 mt-1 flex-wrap">
-                            <span className={`text-xs font-medium px-2 py-0.5 rounded-full border ${config.badge}`}>
+                        <div className="meta-row">
+                            <span className={`type-badge ${config.badge}`}>
                                 {config.icon} {event.type}
                             </span>
-                            <span className="text-xs text-white/40">{displayDate}</span>
+                            <span className="meta-date">{displayDate}</span>
                             {yearsCount > 0 && (
-                                <span className="text-xs text-white/30">
+                                <span className="meta-years">
                                     {event.type === 'Birthday' ? `Age ${yearsCount}` : `${yearsCount} yrs`}
                                 </span>
                             )}
                         </div>
 
-                        {/* Days remaining */}
-                        <div className="mt-2">
-                            {today ? (
-                                <p className="shimmer-text text-sm font-bold">
+                        {/* Countdown */}
+                        <div className="countdown-row">
+                            {todayFlag ? (
+                                <p className="shimmer-text countdown-today">
                                     🎉 Today! — {event.name}'s {event.type}!
                                 </p>
                             ) : (
-                                <p className={`text-sm font-semibold ${config.accent}`}>
+                                <span className={`countdown-pill ${config.countdownClass}`}>
                                     {daysLabel}
-                                </p>
+                                </span>
                             )}
-                            {/* Next date indicator */}
-                            <p className="text-xs text-white/30 mt-0.5">
-                                Next: {nextDate.format('MMM DD, YYYY')}
-                            </p>
+                            <p className="next-date">Next: {nextDate.format('MMM DD, YYYY')}</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Right: Actions */}
-                <div className="flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                {/* Actions */}
+                <div className="card-actions">
                     <button
                         onClick={() => onEdit(event)}
                         title="Edit"
-                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-blue-500/30 border border-white/10
-                       hover:border-blue-400/40 text-white/60 hover:text-blue-300
-                       flex items-center justify-center text-sm transition-all"
+                        className="action-btn action-btn--edit"
                     >
                         ✏️
                     </button>
                     <button
                         onClick={() => onDelete(event.id)}
                         title="Delete"
-                        className="w-8 h-8 rounded-full bg-white/10 hover:bg-red-500/30 border border-white/10
-                       hover:border-red-400/40 text-white/60 hover:text-red-300
-                       flex items-center justify-center text-sm transition-all"
+                        className="action-btn action-btn--delete"
                     >
                         🗑️
                     </button>
                 </div>
             </div>
 
-            {/* Today bottom bar */}
-            {today && (
-                <div className="mt-4 pt-3 border-t border-yellow-400/20">
-                    <p className="text-center text-xs text-yellow-300/70 font-medium">
-                        ✨ Special day today — Don't forget to celebrate!
-                    </p>
+            {/* Today celebration footer */}
+            {todayFlag && (
+                <div className="today-footer">
+                    ✨ Special day today — Don't forget to celebrate!
                 </div>
             )}
         </div>

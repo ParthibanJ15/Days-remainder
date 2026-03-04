@@ -1,32 +1,564 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
 
 :root {
   font-family: 'Inter', sans-serif;
-}
-
-* {
-  box-sizing: border-box;
+  --clr-bg-1: #0a0a1a;
+  --clr-bg-2: #0f0c29;
+  --clr-bg-3: #1a0533;
+  --clr-yellow: #facc15;
+  --clr-orange: #f97316;
+  --clr-purple: #a855f7;
+  --clr-rose: #f43f5e;
+  --clr-glass: rgba(255, 255, 255, 0.05);
+  --clr-glass-border: rgba(255, 255, 255, 0.10);
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+  background: var(--clr-bg-1);
+  color: #fff;
+  overflow-x: hidden;
 }
 
-/* Today card glow animation */
+/* ============================================================
+   ANIMATED BACKGROUND ORBS
+   ============================================================ */
+.app-wrapper {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.bg-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+  z-index: 0;
+  animation: orb-float 8s ease-in-out infinite;
+}
+
+.orb-1 {
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.30) 0%, transparent 70%);
+  top: -140px;
+  left: -140px;
+  animation-delay: 0s;
+}
+
+.orb-2 {
+  width: 420px;
+  height: 420px;
+  background: radial-gradient(circle, rgba(244, 63, 94, 0.25) 0%, transparent 70%);
+  bottom: -100px;
+  right: -100px;
+  animation-delay: -3s;
+}
+
+.orb-3 {
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(250, 204, 21, 0.15) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation-delay: -6s;
+}
+
+@keyframes orb-float {
+
+  0%,
+  100% {
+    transform: translateY(0px) scale(1);
+  }
+
+  50% {
+    transform: translateY(-30px) scale(1.06);
+  }
+}
+
+/* ============================================================
+   LAYOUT SHELL
+   ============================================================ */
+.content-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 540px;
+  margin: 0 auto;
+  padding: 2.5rem 1rem 4rem;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.app-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.header-emoji {
+  font-size: 3.5rem;
+  display: block;
+  animation: emoji-bounce 2.5s ease-in-out infinite;
+  filter: drop-shadow(0 0 16px rgba(250, 204, 21, 0.60));
+}
+
+@keyframes emoji-bounce {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.header-title {
+  margin: 0.4rem 0 0.2rem;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #facc15 0%, #f97316 40%, #f43f5e 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: none;
+}
+
+.header-sub {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.40);
+}
+
+/* Stats pills */
+.stats-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.85rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(8px);
+}
+
+.stat-pill.urgent {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: rgba(250, 204, 21, 0.30);
+  color: #facc15;
+}
+
+/* Add button */
+.add-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #000;
+  background: linear-gradient(135deg, #facc15, #f97316);
+  box-shadow: 0 4px 24px rgba(250, 204, 21, 0.35);
+  transition: transform 0.15s, box-shadow 0.15s, filter 0.15s;
+}
+
+.add-btn:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 32px rgba(250, 204, 21, 0.50);
+  transform: translateY(-1px);
+}
+
+.add-btn:active {
+  transform: scale(0.97);
+}
+
+/* Import toast */
+.import-toast {
+  margin-top: 0.6rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: rgba(34, 197, 94, 0.15);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+  display: inline-block;
+  animation: fade-in-up 0.3s ease-out;
+}
+
+/* ============================================================
+   TOOLBAR (Export / Import)
+   ============================================================ */
+.toolbar {
+  display: flex;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.70);
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.18s;
+}
+
+.toolbar-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-1px);
+}
+
+.toolbar-btn:active {
+  transform: scale(0.97);
+}
+
+.export-btn:hover {
+  border-color: rgba(250, 204, 21, 0.45);
+  color: #facc15;
+}
+
+.import-btn:hover {
+  border-color: rgba(99, 211, 155, 0.45);
+  color: #6ee7b7;
+}
+
+.toolbar-icon {
+  font-size: 1rem;
+}
+
+/* ============================================================
+   MAIN
+   ============================================================ */
+.app-main {
+  width: 100%;
+}
+
+/* ============================================================
+   EVENT CARD
+   ============================================================ */
+.event-card {
+  position: relative;
+  border-radius: 16px;
+  border: 1px solid var(--clr-glass-border);
+  background: rgba(255, 255, 255, 0.04);
+  backdrop-filter: blur(12px);
+  overflow: hidden;
+  transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+.event-card:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.20);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.event-card--today {
+  border: 2px solid rgba(250, 204, 21, 0.55);
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 50%, rgba(15, 52, 96, 0.9) 100%);
+  animation: fade-in-up 0.4s ease-out both, glow-pulse 2.5s ease-in-out infinite;
+}
+
+/* Colored left accent bar */
+.card-accent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 4px 0 0 4px;
+}
+
+.card-body {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 1.1rem 1rem 1.1rem 1.3rem;
+}
+
+.card-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  flex: 1;
+  min-width: 0;
+}
+
+/* Icon circle */
+.icon-circle {
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+}
+
+.icon-circle--today {
+  background: rgba(250, 204, 21, 0.18);
+  border-color: rgba(250, 204, 21, 0.50);
+  box-shadow: 0 0 16px rgba(250, 204, 21, 0.30);
+}
+
+/* Card info */
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-wrap: wrap;
+}
+
+.event-name {
+  margin: 0;
+  font-size: 0.975rem;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.event-name--today {
+  color: #facc15;
+}
+
+.bounce-badge {
+  font-size: 1rem;
+  animation: float-badge 1.5s ease-in-out infinite;
+}
+
+/* Meta row */
+.meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-top: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.type-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.badge-birthday {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.40);
+  color: #c084fc;
+}
+
+.badge-anniversary {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.40);
+  color: #fb7185;
+}
+
+.meta-date {
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.38);
+}
+
+.meta-years {
+  font-size: 0.70rem;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* Countdown */
+.countdown-row {
+  margin-top: 0.5rem;
+}
+
+.countdown-pill {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 700;
+  padding: 0.2rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid;
+}
+
+.countdown-birthday {
+  background: rgba(168, 85, 247, 0.15);
+  border-color: rgba(168, 85, 247, 0.35);
+  color: #d8b4fe;
+}
+
+.countdown-anniversary {
+  background: rgba(244, 63, 94, 0.15);
+  border-color: rgba(244, 63, 94, 0.35);
+  color: #fda4af;
+}
+
+.countdown-today {
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.next-date {
+  margin: 0.25rem 0 0;
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.28);
+}
+
+/* Action buttons */
+.card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.event-card:hover .card-actions {
+  opacity: 1;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.18s;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.action-btn--edit:hover {
+  background: rgba(59, 130, 246, 0.25);
+  border-color: rgba(96, 165, 250, 0.50);
+  color: #93c5fd;
+}
+
+.action-btn--delete:hover {
+  background: rgba(239, 68, 68, 0.25);
+  border-color: rgba(248, 113, 113, 0.50);
+  color: #fca5a5;
+}
+
+/* Today footer bar */
+.today-footer {
+  padding: 0.55rem 1rem;
+  border-top: 1px solid rgba(250, 204, 21, 0.18);
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(250, 204, 21, 0.65);
+}
+
+/* ============================================================
+   SECTION HEADERS (EventList)
+   ============================================================ */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.section-label h2 {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+/* ============================================================
+   ADD EVENT FORM (glassmorphism polish)
+   ============================================================ */
+.form-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 18px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.30);
+}
+
+/* Form inputs */
+input[type="text"],
+input[type="date"] {
+  font-family: inherit;
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
 @keyframes glow-pulse {
 
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(250, 204, 21, 0.4), 0 0 40px rgba(250, 204, 21, 0.2);
+    box-shadow: 0 0 20px rgba(250, 204, 21, 0.30), 0 0 50px rgba(250, 204, 21, 0.12);
   }
 
   50% {
-    box-shadow: 0 0 30px rgba(250, 204, 21, 0.7), 0 0 60px rgba(250, 204, 21, 0.4);
+    box-shadow: 0 0 35px rgba(250, 204, 21, 0.55), 0 0 80px rgba(250, 204, 21, 0.22);
   }
 }
 
@@ -34,7 +566,7 @@ body {
 
   0%,
   100% {
-    transform: translateY(0px);
+    transform: translateY(0);
   }
 
   50% {
@@ -55,7 +587,7 @@ body {
 @keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(18px);
   }
 
   to {
@@ -64,39 +596,28 @@ body {
   }
 }
 
-.today-card {
-  animation: glow-pulse 2s ease-in-out infinite;
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-  border: 2px solid rgba(250, 204, 21, 0.6);
-}
-
-.today-badge {
-  animation: float-badge 1.5s ease-in-out infinite;
-}
-
-.card-enter {
-  animation: fade-in-up 0.4s ease-out forwards;
-}
-
+/* Shimmer text */
 .shimmer-text {
-  background: linear-gradient(90deg, #facc15, #f97316, #facc15);
-  background-size: 200% auto;
+  background: linear-gradient(90deg, #facc15, #f97316, #f43f5e, #f97316, #facc15);
+  background-size: 300% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  animation: shimmer 2s linear infinite;
+  animation: shimmer 2.5s linear infinite;
 }
 
-/* Scrollbar styling */
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 5px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 4px;
 }
