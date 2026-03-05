@@ -88,5 +88,23 @@
         "name": "Vinoth and Brindha",
         "type": "Anniversary",
         "date": "2014-05-11"
+    },
+    {
+        "id": "seed-015",
+        "name": "Dhiyanesh",
+        "type": "Birthday",
+        "date": "2003-12-13"
+    },
+    {
+        "id": "seed-015",
+        "name": "Swetha",
+        "type": "Birthday",
+        "date": "2003-08-03"
+    },
+    {
+        "id": "seed-015",
+        "name": "Gowtham and Swetha",
+        "type": "Anniversary",
+        "date": "2024-09-06"
     }
 ]
