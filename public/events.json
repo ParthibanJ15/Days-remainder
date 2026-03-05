@@ -15,7 +15,7 @@
         "id": "seed-003",
         "name": "Jegan & Santhi",
         "type": "Anniversary",
-        "date": "2004-09-01"
+        "date": "2003-09-01"
     },
     {
         "id": "seed-004",
@@ -28,5 +28,65 @@
         "name": "Parthiban",
         "type": "Birthday",
         "date": "2004-09-15"
+    },
+    {
+        "id": "seed-006",
+        "name": "Vimal",
+        "type": "Birthday",
+        "date": "1984-03-04"
+    },
+    {
+        "id": "seed-007",
+        "name": "Premi",
+        "type": "Birthday",
+        "date": "1991-11-09"
+    },
+    {
+        "id": "seed-008",
+        "name": "Venba",
+        "type": "Birthday",
+        "date": "2016-05-21"
+    },
+    {
+        "id": "seed-009",
+        "name": "Vainavi",
+        "type": "Birthday",
+        "date": "2020-05-21"
+    },
+    {
+        "id": "seed-010",
+        "name": "Vimal and Premi",
+        "type": "Anniversary",
+        "date": "2015-03-23"
+    },
+    {
+        "id": "seed-011",
+        "name": "Vinoth",
+        "type": "Birthday",
+        "date": "1987-08-03"
+    },
+    {
+        "id": "seed-012",
+        "name": "Brindha",
+        "type": "Birthday",
+        "date": "1989-09-13"
+    },
+    {
+        "id": "seed-013",
+        "name": "Vishnu",
+        "type": "Birthday",
+        "date": "2015-11-29"
+    },
+    {
+        "id": "seed-014",
+        "name": "Vaishali",
+        "type": "Birthday",
+        "date": "2018-07-13"
+    },
+    {
+        "id": "seed-015",
+        "name": "Vinoth and Brindha",
+        "type": "Anniversary",
+        "date": "2014-05-11"
     }
 ]
